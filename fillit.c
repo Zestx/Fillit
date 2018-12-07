@@ -6,7 +6,7 @@
 /*   By: qbackaer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 18:08:32 by qbackaer          #+#    #+#             */
-/*   Updated: 2018/12/06 20:59:41 by qbackaer         ###   ########.fr       */
+/*   Updated: 2018/12/07 17:01:05 by qbackaer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,38 +15,47 @@
 #include <stdio.h>
 
 // This function serves to check if the format of the input file is valid.
+
+int		parse_line(char *line)
+{
+	int i;
+
+	i = 0;
+	while (i < 4)
+	{
+		if(line[i] != '.' || line[i] != '#')
+			return (-1);
+		i++;
+	}
+	return (0);
+}
+
 int		parse_file(int fd)
 {
 	char	*line;
 	int		ret;
-	int		count;
+	int		i;
 
-	count = 1;
+	i = 1;
 	while ((ret = get_next_line(fd, &line)) > 0)
 	{
-		printf("COUNT: %d\n", count);
-		printf("%s\n", line);
 		if (ret < 0)
 		{
 			ft_putstr("error: failed to read file.\n");
 			exit(EXIT_FAILURE);
 		}
-		/*if (count % 5 == 0)
-		{
-			ft_putstr("0000\n");
-			if (*(line + count - 1) != '\n' || ft_strlen(line) != 1)
-			{
-				ft_putstr("error 1\n");
+		if (i % 5 == 0 && i > 4)
+			if (*line != '\n' || ft_strlen(line) != 1)
 				return (-1);
-			}
-		}
-		else if (ft_strlen(line) != 4)
+		else if (ft_strlen(line) != 5)
 		{
-			ft_putnbr(ft_strlen(line));
-			ft_putstr("error 2\n");
 			return (-1);
-		}*/
-		count++;
+		}
+		else if (parse_line(line) != 0)
+		{
+			return (-1);
+		}
+		i++;
 		free(line);
 	}
 	return (1);
