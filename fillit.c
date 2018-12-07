@@ -6,15 +6,11 @@
 /*   By: qbackaer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 18:08:32 by qbackaer          #+#    #+#             */
-/*   Updated: 2018/12/07 17:01:05 by qbackaer         ###   ########.fr       */
+/*   Updated: 2018/12/07 20:03:53 by qbackaer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include "./libft/libft.h"
-#include <stdio.h>
-
-// This function serves to check if the format of the input file is valid.
+#include "fillit.h"
 
 int		parse_line(char *line)
 {
@@ -23,7 +19,7 @@ int		parse_line(char *line)
 	i = 0;
 	while (i < 4)
 	{
-		if(line[i] != '.' || line[i] != '#')
+		if(line[i] != '.' && line[i] != '#')
 			return (-1);
 		i++;
 	}
@@ -39,20 +35,20 @@ int		parse_file(int fd)
 	i = 1;
 	while ((ret = get_next_line(fd, &line)) > 0)
 	{
+		ft_putnbr(i);
 		if (ret < 0)
 		{
-			ft_putstr("error: failed to read file.\n");
-			exit(EXIT_FAILURE);
-		}
-		if (i % 5 == 0 && i > 4)
-			if (*line != '\n' || ft_strlen(line) != 1)
-				return (-1);
-		else if (ft_strlen(line) != 5)
-		{
+			ft_putstr("\nerr1\n");
 			return (-1);
 		}
-		else if (parse_line(line) != 0)
+		if (i % 5 == 0 && i > 4 && (*line != '\n' || ft_strlen(line) != 1))
 		{
+			ft_putstr("\nerr2\n");
+			return (-1);
+		}
+		else if (ft_strlen(line) != 5 || !parse_line(line))
+		{
+			ft_putstr("\nerr3\n");
 			return (-1);
 		}
 		i++;
