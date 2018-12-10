@@ -20,4 +20,4 @@ clean:
 
 fclean: clean
 	make fclean -C ./libft
-	rm $(NAME)
+	rm -f $(NAME)
