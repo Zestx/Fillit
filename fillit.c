@@ -11,73 +11,69 @@
 /* ************************************************************************** */
 
 #include "fillit.h"
-
-int		parse_line(char *line)
-{
-	int i;
-
-	i = 0;
-	while (i < 4)
-	{
-		if(line[i] != '.' && line[i] != '#')
-			return (-1);
-		i++;
-	}
-	return (0);
-}
+#include <stdio.h>
 
 int		parse_file(int fd)
 {
-	char	*line;
-	int		ret;
-	int		i;
+    char	buffer[5];
+    char    nl[1];
+    int		ret;
+    int		i;
+    int     j;
+    int     k;
 
-	i = 1;
-	while ((ret = get_next_line(fd, &line)) > 0)
-	{
-		ft_putnbr(i);
-		if (ret < 0)
-		{
-			ft_putstr("\nerr1\n");
-			return (-1);
-		}
-		if (i % 5 == 0 && i > 4 && (*line != '\n' || ft_strlen(line) != 1))
-		{
-			ft_putstr("\nerr2\n");
-			return (-1);
-		}
-		else if (ft_strlen(line) != 5 || !parse_line(line))
-		{
-			ft_putstr("\nerr3\n");
-			return (-1);
-		}
-		i++;
-		free(line);
-	}
-	return (1);
+    ret = 1;
+    k = 0;
+    while (ret && k < 26)
+    {
+        i = 0;
+        while (i < 4 && (ret = read(fd, buffer, 5)) == 5)
+        {
+            if (ret < 0)
+                return (-1);
+            j = 0;
+            while(j < 4)
+            {
+                if (buffer[j] != '.' && buffer[j] != '#')
+                    return (-1);
+                j++;
+            }
+            if(buffer[4] != '\n')
+                return (-1);
+            i++;
+        }
+        if (!ret)
+            break;
+        if ((ret = read(fd, nl, 1)) != 1 || nl[0] != '\n')
+            return (-1);
+        k++;
+    }
+    if (k > 25)
+        return (-1);
+    return (1);
 }
 
 int		main(int argc, char **argv)
 {
-	int input_fd;
-	int	ret;
+    int input_fd;
+    int	ret;
 
-	if (argc != 2)
-	{
-		ft_putstr("usage: ./fillit <source_file>\n");
-		exit(EXIT_FAILURE);
-	}
-	input_fd = open(argv[1], O_RDONLY);
-	if (input_fd < 3)
-	{
-		ft_putstr("error: failed to open input file.\n");
-		exit(EXIT_FAILURE);
-	}
-	if ((ret = parse_file(input_fd)) < 0)
-	{
-		ft_putstr("error: wrong input file format.\n");
-		exit(EXIT_FAILURE);
-	}
-	ft_putnbr(ret);
-	return (0);
+    if (argc != 2)
+    {
+        ft_putstr("usage: ./fillit <source_file>\n");
+        exit(EXIT_FAILURE);
+    }
+    input_fd = open(argv[1], O_RDONLY);
+    if (input_fd < 3)
+    {
+        ft_putstr("error: failed to open input file.\n");
+        exit(EXIT_FAILURE);
+    }
+    if ((ret = parse_file(input_fd)) < 0)
+    {
+        ft_putstr("error: wrong input file format.\n");
+        exit(EXIT_FAILURE);
+    }
+    ft_putnbr(ret);
+    return (0);
 }
