@@ -6,17 +6,15 @@
 /*   By: qbackaer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 18:08:32 by qbackaer          #+#    #+#             */
-/*   Updated: 2018/12/10 15:50:00 by qbackaer         ###   ########.fr       */
+/*   Updated: 2018/12/10 17:05:27 by qbackaer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
 #include <stdio.h>
 
-
-int		parse_tetra(int fd, int *ret)
+int		parse_tetra(int fd, int *ret, char buffer[4][5])
 {
-	char	buffer[4][5];
 	char    nl[1];
 	int		i;
 	int     j;
@@ -42,28 +40,24 @@ int		parse_tetra(int fd, int *ret)
 	return (1);
 }
 
-int		parse_file(int fd)
+int		parse_file(int fd, char buffer[26][4][5])
 {
 	int		ret;
 	int     k;
 
 	k = 0;
-	while ((ret = parse_tetra(fd, &ret)) > 0 && k < 26)
-	{
+	while ((ret = parse_tetra(fd, &ret, buffer[k])) > 0 && k < 27)
 		k++;
-	}
-	if ((ret == 0 && k == 0) || k > 25 || ret < 0)
-	{
-		printf("ERR\n");
+	if (!k || k > 25 || ret < 0)
 		return (-1);
-	}
-	return (1);
+	return (k);
 }
 
 int		main(int argc, char **argv)
 {
-	int input_fd;
-	int	ret;
+	int		input_fd;
+	int		ret;
+	char	buffer[26][4][5];
 
 	if (argc != 2)
 	{
@@ -76,7 +70,7 @@ int		main(int argc, char **argv)
 		ft_putstr("error: failed to open input file.\n");
 		exit(EXIT_FAILURE);
 	}
-	if ((ret = parse_file(input_fd)) < 0)
+	if ((ret = parse_file(input_fd, buffer)) < 0)
 	{
 		ft_putstr("error: wrong input file format.\n");
 		exit(EXIT_FAILURE);
