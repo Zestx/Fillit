@@ -5,7 +5,7 @@ NAME = fillit
 
 all: $(NAME)
 
-$(NAME): $(NAME).o $(LIB)
+$(NAME): $(NAME).o helpers.o $(LIB)
 	$(CC) $(CFLAGS)  $^ -o $@
 
 %.o: %.c

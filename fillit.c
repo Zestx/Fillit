@@ -6,7 +6,7 @@
 /*   By: qbackaer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 18:08:32 by qbackaer          #+#    #+#             */
-/*   Updated: 2018/12/10 19:59:23 by qbackaer         ###   ########.fr       */
+/*   Updated: 2018/12/11 15:39:54 by qbackaer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,15 +27,11 @@ int		check_adjacent(int crd[4][2])
 		match = 0;
 		while (j < 4)
 		{
-			if (j != i)
-			{
-				if ((crd[i][0] == crd[j][0] && (crd[i][1] == crd[j][1] + 1 || crd[i][1] == crd[j][1] - 1)) 
-						|| ((crd[i][1] == crd[j][1]) && (crd[i][0] == crd[j][0] + 1 || crd[i][0] == crd[j][0] - 1)))
-					match = 1; 
-			}
+			if (j != i && (match = compare_coords(crd, i, j)))
+				break ;
 			j++;
 		}
-		if (match == 0)	
+		if (!match)
 			return (-1);
 		i++;
 	}
@@ -51,7 +47,6 @@ int		check_tetra(char buffer[4][5])
 
 	i = 0;
 	count = 0;
-	printf("\n--\n--\n");
 	while (i < 4)
 	{
 		j = 0;
@@ -67,7 +62,7 @@ int		check_tetra(char buffer[4][5])
 		}
 		i++;
 	}
-	if (count != 4  || check_adjacent(coord) < 0)
+	if (count != 4 || check_adjacent(coord) < 0)
 		return (-1);
 	return (1);
 }

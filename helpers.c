@@ -1,28 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fillit.h                                           :+:      :+:    :+:   */
+/*   helpers.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: qbackaer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/12/07 19:55:51 by qbackaer          #+#    #+#             */
-/*   Updated: 2018/12/11 15:30:12 by qbackaer         ###   ########.fr       */
+/*   Created: 2018/12/11 15:14:33 by qbackaer          #+#    #+#             */
+/*   Updated: 2018/12/11 15:40:17 by qbackaer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FILLIT_H
-# define FILLIT_H
+#include "fillit.h"
 
-# include <stdlib.h>
-# include <unistd.h>
-# include "./libft/libft.h"
-
-//fillit.c
-int		parse_file(int fd, char buffer[26][4][5]);
-int		parse_tetra(int fd, int *ret, char buffer[4][5]);
-int		check_adjacent(int crd[4][2]);
-int		check_tetra(char buffer[4][5]);
-//helpers.c
-int		compare_coords(int crd[4][2], int i, int j);
-
-#endif
+int		compare_coords(int crd[4][2], int i, int j)
+{
+	if (crd[i][0] == crd[j][0] &&
+			(crd[i][1] == crd[j][1] + 1 || crd[i][1] == crd[j][1] - 1))
+		return (1);
+	if (crd[i][1] == crd[j][1] &&
+			(crd[i][0] == crd[j][0] + 1 || crd[i][0] == crd[j][0] - 1))
+		return (1);
+	return (0);
+}
