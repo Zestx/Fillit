@@ -6,7 +6,7 @@
 /*   By: qbackaer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 18:08:32 by qbackaer          #+#    #+#             */
-/*   Updated: 2018/12/11 15:39:54 by qbackaer         ###   ########.fr       */
+/*   Updated: 2018/12/11 20:43:17 by qbackaer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,11 +109,31 @@ int		parse_file(int fd, char buffer[26][4][5])
 	return (k);
 }
 
+void	display_tetra(char buffer[4][5])
+{
+	int i;
+	int j;
+
+	i = 0;
+	while (i < 4)
+	{
+		j = 0;
+		while (j < 5)
+		{
+			ft_putchar(buffer[i][j]);
+			j++;
+		}
+		i++;
+	}
+	ft_putchar('\n');
+}
+
 int		main(int argc, char **argv)
 {
 	int		input_fd;
 	int		ret;
 	char	buffer[26][4][5];
+	int i = 0;
 
 	if (argc != 2)
 	{
@@ -131,6 +151,12 @@ int		main(int argc, char **argv)
 		ft_putstr("error: wrong input file format.\n");
 		exit(EXIT_FAILURE);
 	}
-	printf("\nRET: %d\n", ret);
+	while (ret)
+	{
+		display_tetra(buffer[i]);
+		ret--;
+		i++;
+	}
+	printf("RET: %d\n", ret);
 	return (0);
 }
